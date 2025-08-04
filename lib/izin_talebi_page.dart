@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart'; // Make sure you have intl in pubspec
+import 'package:intl/intl.dart';
 
-import 'dashboard_page.dart'; // or wherever you want to go back
+import 'dashboard_page.dart'; 
 
 class IzinTalebiPage extends StatefulWidget {
   static const routeName = '/izin-talebi';
@@ -43,14 +43,13 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
     final d = await showDatePicker(
       context: context,
       initialDate: _endDate.isBefore(_startDate) ? _startDate : _endDate,
-      firstDate: _startDate, // ← can’t pick before start
+      firstDate: _startDate, 
       lastDate: DateTime(2100),
     );
     if (d != null) setState(() => _endDate = d);
   }
 
   Future<void> _pickEndTime() async {
-    // If end date == start date, don’t allow time before _startTime
     final initial =
         (_endDate.isAtSameMomentAs(_startDate) || _endDate.isBefore(_startDate))
         ? _startTime
@@ -60,7 +59,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
 
     if (t != null) {
       setState(() {
-        // If same day AND picked time is before startTime, clamp it
         if (_endDate == _startDate &&
             (t.hour < _startTime.hour ||
                 (t.hour == _startTime.hour && t.minute < _startTime.minute))) {
@@ -106,19 +104,14 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
       return;
     }
 
-    // permit_type: using tab index + 1
     final permitType = (_tabIndex + 1).toString();
 
-    // format "yyyy-MM-dd HH:mm:ss"
     String fmtDate(DateTime d) => DateFormat('yyyy-MM-dd').format(d);
     String fmtTime(TimeOfDay t) =>
         '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}:00';
 
     final startDT = '${fmtDate(_startDate)} ${fmtTime(_startTime)}';
     final endDT = '${fmtDate(_endDate)} ${fmtTime(_endTime)}';
-    // final desc = Uri.encodeComponent(_descCtrl.text.trim());
-
-    // final desc = _descCtrl.text.trim();
     final desc = Uri.encodeComponent(_descCtrl.text.trim());
     if (desc.isEmpty) {
       setState(() {
@@ -143,7 +136,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
       if (res.statusCode == 200) {
         final body = jsonDecode(res.body) as Map<String, dynamic>;
         if (body['status'] == 1) {
-          // success: show message then pop
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(body['message'] as String)));
@@ -220,16 +212,10 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
 
             const SizedBox(height: 24),
 
-            // ─── First row: Başlangıç Tarihi, Date & Time ───────────────────
             Row(
               children: [
-                // Label
                 const Text('Başlangıç Tarihi'),
-
-                // const SizedBox(width: 8),
                 Spacer(),
-
-                // Date button
                 ElevatedButton(
                   onPressed: _pickStartDate,
                   style: ElevatedButton.styleFrom(
@@ -246,7 +232,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
                 ),
                 const SizedBox(width: 8),
 
-                // Time button
                 ElevatedButton(
                   onPressed: _pickStartTime,
                   style: ElevatedButton.styleFrom(
@@ -266,13 +251,10 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
 
             const SizedBox(height: 16),
 
-            // ─── Second row: Bitiş Tarihi, Date & Time ──────────────────────
             Row(
               children: [
                 const Text('Bitiş Tarihi'),
-                // const SizedBox(width: 8),
                 Spacer(),
-
                 ElevatedButton(
                   onPressed: _pickEndDate,
                   style: ElevatedButton.styleFrom(
@@ -308,7 +290,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
 
             const SizedBox(height: 16),
 
-            // Description
             TextField(
               controller: _descCtrl,
               decoration: InputDecoration(
@@ -323,7 +304,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
 
             const Spacer(),
 
-            // Send button with loading
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -351,15 +331,6 @@ class _IzinTalebiPageState extends State<IzinTalebiPage> {
             ],
 
             const SizedBox(height: 12),
-            // Footer
-            // Column(
-            //   children: const [
-            //     Text('Makro ERP Mobil v1.0',
-            //         style: TextStyle(color: Colors.grey, fontSize: 12)),
-            //     Text('© 2025 Makro2000 Yapı ve İnşaat',
-            //         style: TextStyle(color: Colors.grey, fontSize: 12)),
-            //   ],
-            // ),
           ],
         ),
       ),

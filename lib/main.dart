@@ -24,7 +24,6 @@ class MakroApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF2F2F7),
       ),
 
-      // Instead of initialRoute, use home with a FutureBuilder
       home: FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),
         builder: (context, snapshot) {

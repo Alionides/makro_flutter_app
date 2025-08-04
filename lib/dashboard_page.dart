@@ -12,12 +12,12 @@ import 'kartvizit_page.dart';
 class _HeaderAction extends StatelessWidget {
   final String label;
   final IconData icon;
-  final VoidCallback? onTap; // ← new
+  final VoidCallback? onTap;
 
   const _HeaderAction(
     this.label,
     this.icon, {
-    this.onTap, // ← new
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class _HeaderAction extends StatelessWidget {
           color: Colors.white,
           child: InkWell(
             customBorder: CircleBorder(),
-            onTap: onTap, // ← wire it up
+            onTap: onTap, 
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Icon(icon, color: Color(0xFF1A1F4A), size: 28),
@@ -55,7 +55,6 @@ class _DashboardPageState extends State<DashboardPage> {
   Map<String, int> _counts = {};
   bool _loadingCounts = true;
 
-  // your API key (could also store in SharedPreferences or constants)
   final String _apiKey = '27a0971fa75530a36fad475e';
 
   @override
@@ -95,7 +94,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
         if (result['status'] == 1) {
           setState(() {
-            // map the API fields into our local count map
             _counts = {
               'malzeme': result['malzeme_talep_onay'] as int,
               'personel': result['personel_izin_onay'] as int,
@@ -103,13 +101,11 @@ class _DashboardPageState extends State<DashboardPage> {
               'razi': result['razicount'] as int,
               'nakliye1': result['nakliyecount'] as int,
               'nakliye2': result['nakliyescount'] as int,
-              // add more if you expose them later...
             };
           });
         }
       }
     } catch (_) {
-      // you might show an error toast here
     } finally {
       setState(() {
         _loadingCounts = false;
@@ -121,7 +117,6 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final double topInset = MediaQuery.of(context).padding.top;
 
-    // define your tiles: title, icon, and the key to lookup in _counts
     final List<Map<String, dynamic>> tiles = [
       {
         'title': 'Malzeme Talep',
@@ -152,13 +147,11 @@ class _DashboardPageState extends State<DashboardPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Dark header
           Container(
             color: const Color(0xFF1A1F4A),
             padding: EdgeInsets.only(top: topInset, bottom: 12),
             child: Column(
               children: [
-                // user row
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -190,7 +183,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
 
-                // quick actions
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -198,7 +190,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // inside your header row children (remove const so you can pass onTap):
                     children: [
                       _HeaderAction(
                         'İzin Talebi',
@@ -235,7 +226,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
           const SizedBox(height: 12),
 
-          // Feature grid with live counts
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -263,7 +253,6 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
 
-          // Logout
           Padding(
             padding: const EdgeInsets.all(16),
             child: Align(
@@ -285,7 +274,6 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
-/// Tile with count badge under the label
 class _FeatureTile extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -299,7 +287,7 @@ class _FeatureTile extends StatelessWidget {
       color: const Color(0xFF1A1F4A),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {}, // handle tap
+        onTap: () {}, 
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,

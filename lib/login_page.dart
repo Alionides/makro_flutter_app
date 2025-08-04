@@ -43,12 +43,10 @@ class _LoginPageState extends State<LoginPage> {
         final result = body['result'] as Map<String, dynamic>;
 
         if (result['status'] == 1) {
-          // Save user_id and user_name
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('user_id', result['user_id'] as String);
           await prefs.setString('user_name', result['user_name'] as String);
 
-          // Navigate to dashboard
           Navigator.pushReplacementNamed(context, DashboardPage.routeName);
         } else {
           setState(() => _error = result['message'] as String);
@@ -81,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 48),
 
-              // Email field
               TextField(
                 controller: _emailCtrl,
                 keyboardType: TextInputType.emailAddress,
@@ -98,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 16),
 
-              // Password field
               TextField(
                 controller: _passwordCtrl,
                 obscureText: _obscure,
@@ -121,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 32),
 
-              // Sign In button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -142,7 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              // Error message
               if (_error != null) ...[
                 const SizedBox(height: 12),
                 Text(_error!, style: const TextStyle(color: Colors.red)),

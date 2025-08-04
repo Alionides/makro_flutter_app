@@ -27,7 +27,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
     final title = _subjectCtrl.text.trim();
     final desc = _descCtrl.text.trim();
 
-    // 1) Validate non-empty
     if (title.isEmpty || desc.isEmpty) {
       setState(() => _error = 'Lütfen tüm alanları doldurunuz.');
       return;
@@ -38,7 +37,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
       _submitting = true;
     });
 
-    // 2) Get user_id
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id') ?? '';
     if (userId.isEmpty) {
@@ -49,7 +47,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
       return;
     }
 
-    // 3) Build the URI with percent-encoding
     const apiKey = '27a0971fa75530a36fad475e';
     final uri = Uri.https(
       'muhasebe.makro2000.com.tr',
@@ -63,7 +60,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
     );
 
     try {
-      // 4) Call API
       final res = await http.get(uri);
 
       if (res.statusCode == 200) {
@@ -72,14 +68,12 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
         final message = body['message'] as String? ?? 'Bilinmeyen hata';
 
         if (status == 1) {
-          // 5a) Success: show snackbar & pop
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(message)));
           Navigator.pop(context);
           return;
         } else {
-          // 5b) Server‐side error
           setState(() => _error = message);
         }
       } else {
@@ -106,7 +100,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Title
             Row(
               children: const [
                 Icon(Icons.headset_mic, size: 24, color: Color(0xFF1A1F4A)),
@@ -120,7 +113,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
 
             const SizedBox(height: 16),
 
-            // Subject field
             TextField(
               controller: _subjectCtrl,
               decoration: InputDecoration(
@@ -134,8 +126,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
             ),
 
             const SizedBox(height: 12),
-
-            // Description field
             Expanded(
               child: TextField(
                 controller: _descCtrl,
@@ -153,7 +143,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
               ),
             ),
 
-            // Show validation / server errors
             if (_error != null) ...[
               const SizedBox(height: 8),
               Text(_error!, style: const TextStyle(color: Colors.red)),
@@ -161,7 +150,6 @@ class _DestekTalebiPageState extends State<DestekTalebiPage> {
 
             const SizedBox(height: 12),
 
-            // Send button
             SizedBox(
               height: 50,
               child: ElevatedButton(

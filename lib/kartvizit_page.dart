@@ -14,7 +14,7 @@ class _KartvizitPageState extends State<KartvizitPage> {
   bool   _loading   = true;
   String? _error;
   String? _vcardText;
-  String? _fotoUrl; // leave blank for now
+  String? _fotoUrl;
 
   @override
   void initState() {
@@ -40,7 +40,6 @@ class _KartvizitPageState extends State<KartvizitPage> {
       return;
     }
 
-    // Build a dummy vCard string
     final sb = StringBuffer()
       ..writeln('BEGIN:VCARD\r')
       ..writeln('VERSION:3.0\r')
@@ -58,7 +57,7 @@ class _KartvizitPageState extends State<KartvizitPage> {
 
     setState(() {
       _vcardText = sb.toString();
-      _fotoUrl   = ''; // empty until real data is wired in
+      _fotoUrl   = ''; 
       _loading   = false;
     });
   }
@@ -106,7 +105,7 @@ class _KartvizitPageState extends State<KartvizitPage> {
                           size: 200,
                           gapless: false,
                         ),
-                        // photo placeholder (empty for now)
+                        
                         if (_fotoUrl != null && _fotoUrl!.isNotEmpty) ...[
                           const SizedBox(height: 24),
                           Container(
